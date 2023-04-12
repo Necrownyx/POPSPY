@@ -4,9 +4,9 @@ class account:
         self.password = password # Password
         self.server = server # Pop server
 
-        self.messagecount = 0 # Number of messages in inbox
-        self.lastMessageDate = 0 # Unix time of last message
+        self.messageCount = 0 # Number of messages in inbox
         self.active = self.checkAccount()
+        self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
     
     def checkAccount(self):
         '''Checks if the account is valid by trying to connect to the server and log in.
@@ -19,12 +19,34 @@ class account:
             pop.user(self.email)
             pop.pass_(self.password)
 
-            self.messagecount = len(pop.list()[1])
-            self.lastMessageDate = pop.stat()[2]
-            print(self.lastMessageDate)
+            self.messagecount = pop.stat()[0]
 
             pop.quit()
             return True
         except:
             return False
     
+    def getWelcomeMessage(self):
+        '''Returns the welcome message from the server.'''
+        import poplib
+        pop = poplib.POP3(self.server)
+        pop.user(self.email)
+        pop.pass_(self.password)
+
+        welcomeMessage = pop.getwelcome()
+        pop.quit()
+        return welcomeMessage
+    
+    def getMessageDate(self, messageNumber):
+        '''Returns the date of a specific message.
+            messageNumber is the number of the message in the inbox.
+        '''
+        import poplib
+        pop = poplib.POP3(self.server)
+        pop.user(self.email)
+        pop.pass_(self.password)
+
+        message = pop.retr(messageNumber)[1]
+        message = str(message)
+        message = message.split("\\r\\n")
+        print(message)
