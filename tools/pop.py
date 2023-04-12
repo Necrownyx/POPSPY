@@ -2,7 +2,7 @@
 This file manages the email accounts and gives them specific functions.
 '''
 class account:
-    def __init__(self, email = None, password = None, server = None):
+    def __init__(self, email = None, password = None, server = None, check = True):
         self.email = email # Email address
         self.password = password # Password
         self.server = server # Pop server
@@ -13,11 +13,18 @@ class account:
             self.lastMessageDate = None
             return
 
-
-        self.active = self.checkAccount()
-        if self.active:
-            self.messageCount = self.getMessageCount() # Number of messages in the inbox
-            self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
+        if check:
+            self.active = self.checkAccount()
+            if self.active:
+                self.messageCount = self.getMessageCount() # Number of messages in the inbox
+                self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
+            else:
+                self.messageCount = 0
+                self.lastMessageDate = None
+        else:
+            self.active = True
+            self.messageCount = 0
+            self.lastMessageDate = None
     
     def exportAccount(self):
         '''Returns a string with the account information.'''

@@ -5,6 +5,17 @@ import os
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
+def preUI():
+    global d
+    # get the user to select a file to use as the data file
+    print(colorama.Fore.GREEN + "Welcome to POPSPY!" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please select a data file to use" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "" + colorama.Fore.RESET)
+
+    file = input("File: ")
+    d = data(file)
+
+
 # UI
 def printUI(error=False):
     colorama.init()
@@ -29,7 +40,44 @@ def printUI(error=False):
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI(error=True)
 
+# import an account
+def importAccount():
+    global d
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    colorama.init()
+    print(colorama.Fore.GREEN + "IMPORT ACCOUNTS" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please enter the account details in the below format or provide the name of a txt file with the below format separated with newlines" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "Format: email:password:server" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "Example: example@example.com:password:pop.example.com" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "" + colorama.Fore.RESET)
+
+    accounts = input("Input: ")
+    check = input("do you want to check the accounts? (y/n): ")
+    if check == "y": check = True
+    else: check = False
+
+    if accounts.endswith(".txt"):
+        with open(accounts, "r") as f:
+            accounts = f.read()
+        
+        accounts = accounts.split("\n")
+        for i in accounts:
+            if i == "": accounts.remove(i)
+            else: 
+                i = i.split(":")
+                acc = account(i[0], i[1], i[2], check)
+                d.appendAccount(acc)
+    
+    else:
+        accounts = accounts.split(":")
+        acc = account(accounts[0], accounts[1], accounts[2], check)
+        d.appendAccount(acc)
+
+
+
 
 
 # print the ui
-printUI()
+# printUI()
+importAccount()
