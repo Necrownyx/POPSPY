@@ -42,21 +42,21 @@ class data:
 
             try:
                 with open(location, 'w') as file:
-                    json.dump(d, file, indent=4)
+                    json.dumps(d, file, indent=4)
                 return data
             except:
                 return None
     
-    def saveData(self, location='data.json'):
+    def saveData(self, location='data.json', d=None):
         import json
 
-
-        d = {'accounts': self.accounts, 'settings': self.settings, 'messages': self.messages}
+        if d == None:
+            d = {'accounts': self.accounts, 'settings': self.settings, 'messages': self.messages}
 
         # overwrite the json file and dump as indented json
         try:
             with open(location, 'w') as file:
-                json.dump(d, file, indent=4)
+                json.dumps(d, file, indent=4)
             return True
         except Exception as e:
             return e
@@ -74,15 +74,6 @@ class data:
                 # remove the account from the dictionary
                 del self.accounts[i]
                 break
-        
-        # move all the accounts after the deleted account up one index
-        for i in self.accounts:
-            if int(i) > index:
-                self.accounts[str(int(i) - 1)] = self.accounts[i]
-
-                if int(i) == len(self.accounts):
-                    del self.accounts[i]
-                    break
                 
         
 

@@ -30,7 +30,7 @@ def printUI(error=False):
     print(colorama.Fore.GREEN + "Please select an option from below to continue" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "1. Import Account/Accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "2. Save Data to json" + colorama.Fore.RESET)
-    print(colorama.Fore.RED + "3. View/Edit Loaded Accounts" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "3. View Loaded Accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "4. Scan email subjects" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "5. Scan email bodies (slow)" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "6. Exit" + colorama.Fore.RESET)
@@ -96,7 +96,7 @@ def exportAccount():
     i = input("File: ")
     if i == "": i = file
 
-    if d.saveData(input):
+    if d.saveData(i, d):
         print(colorama.Fore.GREEN + "Successfully saved data to: " + i + colorama.Fore.RESET)
         time.sleep(2)
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -116,15 +116,13 @@ def viewAccounts():
     print(colorama.Fore.RED + "1. View all accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "2. View active accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "3. View inactive accounts" + colorama.Fore.RESET)
-    print(colorama.Fore.RED + "4. Delete an account" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "5. Exit" + colorama.Fore.RESET)
 
     choice = input("Choice: ")
     if choice == "1": printAccounts(d.getAccounts())
     elif choice == "2": printAccounts(d.getActiveAccounts())
     elif choice == "3": printAccounts(d.getInactiveAccounts())
-    elif choice == "4": deleteAccount()
-    elif choice == "5": 
+    elif choice == "4": 
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI()
     else: 
@@ -138,30 +136,6 @@ def printAccounts(accounts):
     input("Press enter to continue")
     os.system('cls' if os.name == 'nt' else 'clear')
     viewAccounts()
-
-def deleteAccount():
-    global d
-
-    os.system('cls' if os.name == 'nt' else 'clear')
-    colorama.init()
-    print(colorama.Fore.GREEN + "DELETE ACCOUNT" + colorama.Fore.RESET)
-    print(colorama.Fore.GREEN + "Please enter the email or index of the account you want to delete" + colorama.Fore.RESET)
-
-    email = input("Input: ")
-    if email.isdigit(): d.removeAccount(int(email))
-    else:
-        for i in d.getAccounts():
-            if i[0] == email:
-                d.removeAccount(i[1])
-                break
-        d.saveData(file)
-    
-    print(colorama.Fore.GREEN + "Successfully deleted account returning" + colorama.Fore.RESET)
-    time.sleep(2)
-
-    os.system('cls' if os.name == 'nt' else 'clear')
-    viewAccounts()
-
 
 
 
