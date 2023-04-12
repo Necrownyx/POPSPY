@@ -1,3 +1,6 @@
+'''
+This file manages the email accounts and gives them specific functions.
+'''
 class account:
     def __init__(self, email = None, password = None, server = None):
         self.email = email # Email address
