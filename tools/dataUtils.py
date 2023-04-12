@@ -68,23 +68,45 @@ class data:
         return [self.accounts, self.settings, self.messages]
 
     def removeAccount(self, index):
-        del self.accounts[index]
+        # find the account in the dictionary
+        for i in self.accounts:
+            if i == index:
+                # remove the account from the dictionary
+                del self.accounts[i]
+                break
+        
+        # move all the accounts after the deleted account up one index
+        for i in self.accounts:
+            if int(i) > index:
+                self.accounts[str(int(i) - 1)] = self.accounts[i]
+
+                if int(i) == len(self.accounts):
+                    del self.accounts[i]
+                    break
+                
+        
 
         # return the new data
         return [self.accounts, self.settings, self.messages]
+
+    def getAccounts(self):
+        accounts = []
+        for i in self.accounts:
+            accounts.append(self.accounts[i])
+        return accounts
     
     def getActiveAccounts(self):
         activeAccounts = []
         for i in self.accounts:
             if self.accounts[i][3]:
-                activeAccounts.append(i)
+                activeAccounts.append(self.accounts[i])
         return activeAccounts
     
     def getInactiveAccounts(self):
         inactiveAccounts = []
         for i in self.accounts:
             if not self.accounts[i][3]:
-                inactiveAccounts.append(i)
+                inactiveAccounts.append(self.accounts[i])
         return inactiveAccounts
 
 
