@@ -2,6 +2,16 @@
 This file manages the data for the program. It will load and save the data this is to minimize the amount of time it takes to load the data into the program.
 The data is all stored in a single json file.
 '''
+class data:
+    def __init__(self, location='data.json'):
+        self.location = location
+        self.data = self.loadData(location)
+
+
+
+
+
+
 def loadData(location='data.json'):
     # check if the file exists
     import os
@@ -45,5 +55,14 @@ def saveData(data, location='data.json'):
         return True
     except:
         return False
+
+def appendAccount(data, account):
+    accounts = data[0]
+
+    # append the account to the accounts list with a number as the key
+    accounts[len(accounts) + 1] = [account.email, account.password, account.server, account.active, account.messageCount, account.lastMessageDate]
+
+    # return the new data
+    return [accounts, settings, messages]
 
 
