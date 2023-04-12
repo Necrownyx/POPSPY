@@ -2,18 +2,24 @@ from tools import *
 import poplib
 import colorama
 import os
+import time
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
 def preUI():
-    global d
+    global d, file
     # get the user to select a file to use as the data file
     print(colorama.Fore.GREEN + "Welcome to POPSPY!" + colorama.Fore.RESET)
-    print(colorama.Fore.GREEN + "Please select a data file to use" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please select a data file to use or leave blank to use : 'data.json'" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "" + colorama.Fore.RESET)
 
     file = input("File: ")
+    if file == "": file = "data.json"
+
     d = data(file)
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    printUI()
 
 
 # UI
@@ -23,7 +29,7 @@ def printUI(error=False):
     print(colorama.Fore.GREEN + "Welcome to the POPSPY User Interface!" + colorama.Fore.RESET)
     print(colorama.Fore.GREEN + "Please select an option from below to continue" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "1. Import Account/Accounts" + colorama.Fore.RESET)
-    print(colorama.Fore.RED + "2. Export Account/Accounts" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "2. Save Data to json" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "3. View/Edit Loaded Accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "4. Scan email subjects" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "5. Scan email bodies (slow)" + colorama.Fore.RESET)
@@ -74,10 +80,29 @@ def importAccount():
         acc = account(accounts[0], accounts[1], accounts[2], check)
         d.appendAccount(acc)
 
+def exportAccount():
+    global d, file
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    colorama.init()
+    print(colorama.Fore.GREEN + "EXPORT ACCOUNTS" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please enter the name of the file you want to export the accounts to or the file: '" + file + "' will be used." + colorama.Fore.RESET)
+
+    i = input("File: ")
+    if i == "": i = file
+
+    if d.saveData(input):
+        print(colorama.Fore.GREEN + "Successfully saved data to: " + i + colorama.Fore.RESET)
+        time.sleep(2)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        printUI()
+    else:
+        print(d.saveData(input))
+        print(colorama.Fore.RED + "Failed to save data to: " + i + colorama.Fore.RESET)
+        print(colorama.Fore.RED + "Please raise an issue on this projects github page" + i + colorama.Fore.RESET)
 
 
 
 
 # print the ui
-# printUI()
-importAccount()
+preUI()

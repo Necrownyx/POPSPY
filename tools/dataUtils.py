@@ -58,8 +58,8 @@ class data:
             with open(location, 'w') as file:
                 json.dump(d, file, indent=4)
             return True
-        except:
-            return False
+        except Exception as e:
+            return e
 
     def appendAccount(self, account):
         self.accounts[len(self.accounts) + 1] = [account.email, account.password, account.server, account.active, account.messageCount, account.lastMessageDate]
