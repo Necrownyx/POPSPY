@@ -1,3 +1,3 @@
 from tools import *
 
-test()
+test_package()
