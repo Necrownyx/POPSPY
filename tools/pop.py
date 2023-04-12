@@ -4,9 +4,11 @@ class account:
         self.password = password # Password
         self.server = server # Pop server
 
-        self.messageCount = 0 # Number of messages in inbox
+
         self.active = self.checkAccount()
-        self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
+        if self.active:
+            self.messageCount = self.getMessageCount() # Number of messages in the inbox
+            self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
     
     def checkAccount(self):
         '''Checks if the account is valid by trying to connect to the server and log in.
@@ -25,6 +27,17 @@ class account:
             return True
         except:
             return False
+        
+    def getMessageCount(self):
+        '''Returns the number of messages in the inbox.'''
+        import poplib
+        pop = poplib.POP3(self.server)
+        pop.user(self.email)
+        pop.pass_(self.password)
+
+        messageCount = pop.stat()[0]
+        pop.quit()
+        return messageCount
     
     def getWelcomeMessage(self):
         '''Returns the welcome message from the server.'''
@@ -46,7 +59,28 @@ class account:
         pop.user(self.email)
         pop.pass_(self.password)
 
-        message = pop.retr(messageNumber)[1]
+        message = pop.retr(messageNumber)
         message = str(message)
-        message = message.split("\\r\\n")
-        print(message)
+        message = message[0:600]
+        message = message.split(";")
+        for part in message:
+            if " Mon" in part or " Tue" in part or " Wed" in part or " Thu" in part or " Fri" in part or " Sat" in part or " Sun" in part:
+                message = part
+                break
+        message = message[0:32]
+        message = message[1:]
+        return message
+    
+    def getMessageSubject(self, messageNumber):
+        '''Returns the subject of a specific message.
+            messageNumber is the number of the message in the inbox.
+        '''
+        import poplib
+        pop = poplib.POP3(self.server)
+        pop.user(self.email)
+        pop.pass_(self.password)
+
+        # use pop.top() to get the first 100 lines of the message
+        message = pop.top(messageNumber, 10)
+        return message[1][0]
+
