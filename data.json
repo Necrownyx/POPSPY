@@ -1,5 +1,38 @@
 {
-    "accounts": {},
+    "accounts": {
+        "1": [
+            "lboutestanfei198612@rambler.ru",
+            "4sH98svjLoK",
+            "pop.rambler.ru",
+            true,
+            26,
+            "Fri, 07 Apr 2023 07"
+        ],
+        "2": [
+            "lboutestanfei198612@rambler.ru",
+            "4sH98svjLoK",
+            "pop.rambler.ru",
+            true,
+            26,
+            "Fri, 07 Apr 2023 07"
+        ],
+        "3": [
+            "lboutestanfei198612@rambler.ru",
+            "4sH98svjLoK",
+            "pop.rambler.ru",
+            true,
+            26,
+            "Fri, 07 Apr 2023 07"
+        ],
+        "4": [
+            "lboutestanfei198612@rambler.ru",
+            "4sH98svjLoK",
+            "pop.rambler.ru",
+            true,
+            26,
+            "Fri, 07 Apr 2023 07"
+        ]
+    },
     "settings": {},
     "messages": {}
 }

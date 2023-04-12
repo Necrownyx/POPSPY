@@ -7,62 +7,70 @@ class data:
         self.location = location
         self.data = self.loadData(location)
 
-
-
-
-
-
-def loadData(location='data.json'):
-    # check if the file exists
-    import os
-
-    if os.path.exists(location):
-        # load the data
-        import json
-        with open(location, 'r') as file:
-            data = json.load(file)
-        accounts = data['accounts']
-        settings = data['settings']
-        messages = data['messages']
-
-        d = [accounts, settings, messages]
-        return d
-    else:
-        # create the file and rerun the function
-        saveData(None)
-        return loadData(location)
+        self.accounts = self.data[0]
+        self.settings = self.data[1]
+        self.messages = self.data[2]
     
-def saveData(data, location='data.json'):
-    import json
 
-    # if the data is None then create a new data file
-    if data == None:
-        data = [{}, {}, {}]
+    def loadData(self, location='data.json'):
+        # check if the file exists
+        import os
+
+        if os.path.exists(location):
+            # load the data
+            import json
+            with open(location, 'r') as file:
+                data = json.load(file)
+            
+            # accoutns, settings, messages are all different dictionaries that need to be combined into one dictionary
+            self.accounts = data['accounts']
+            self.settings = data['settings']
+            self.messages = data['messages']
+
+            return [self.accounts, self.settings, self.messages]
+        else:
+            # create the file
+            import json
+            data = [{}, {}, {}]
+
+            # accoutns, settings, messages are all different dictionaries that need to be combined into one dictionary
+            accounts = data[0]
+            settings = data[1]
+            messages = data[2]
+
+            d = {'accounts': accounts, 'settings': settings, 'messages': messages}
+
+            try:
+                with open(location, 'w') as file:
+                    json.dump(d, file, indent=4)
+                return data
+            except:
+                return None
+    
+    def saveData(self, location='data.json'):
+        import json
 
 
+        d = {'accounts': self.accounts, 'settings': self.settings, 'messages': self.messages}
 
-    # accoutns, settings, messages are all different dictionaries that need to be combined into one dictionary
-    accounts = data[0]
-    settings = data[1]
-    messages = data[2]
+        # overwrite the json file and dump as indented json
+        try:
+            with open(location, 'w') as file:
+                json.dump(d, file, indent=4)
+            return True
+        except:
+            return False
 
-    d = {'accounts': accounts, 'settings': settings, 'messages': messages}
+    def appendAccount(self, account):
+        self.accounts[len(self.accounts) + 1] = [account.email, account.password, account.server, account.active, account.messageCount, account.lastMessageDate]
 
-    try:
-        # dump as indented json
-        with open(location, 'w') as file:
-            json.dump(d, file, indent=4)
-        return True
-    except:
-        return False
+        # return the new data
+        return [self.accounts, self.settings, self.messages]
 
-def appendAccount(data, account):
-    accounts = data[0]
+    def removeAccount(self, index):
+        del self.accounts[index]
 
-    # append the account to the accounts list with a number as the key
-    accounts[len(accounts) + 1] = [account.email, account.password, account.server, account.active, account.messageCount, account.lastMessageDate]
-
-    # return the new data
-    return [accounts, settings, messages]
+        # return the new data
+        return [self.accounts, self.settings, self.messages]
 
 
