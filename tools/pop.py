@@ -1,8 +1,14 @@
 class account:
-    def __init__(self, email, password, server):
+    def __init__(self, email = None, password = None, server = None):
         self.email = email # Email address
         self.password = password # Password
         self.server = server # Pop server
+
+        if email == None and password == None and server == None:
+            self.active = False
+            self.messageCount = 0
+            self.lastMessageDate = None
+            return
 
 
         self.active = self.checkAccount()
@@ -23,6 +29,7 @@ class account:
         self.active = bool(account[3])
         self.messageCount = int(account[4])
         self.lastMessageDate = account[5]
+        return self
 
     def checkAccount(self):
         '''Checks if the account is valid by trying to connect to the server and log in.
@@ -94,7 +101,32 @@ class account:
         pop.user(self.email)
         pop.pass_(self.password)
 
-        # use pop.top() to get the first 100 lines of the message
-        message = pop.top(messageNumber, 10)
-        return message[1][0]
+        message = pop.top(messageNumber, 1)
+        message = message[1]
+        for part in message:
+            if b'Subject: ' in part:
+                message = part
+                break
+        message = str(message)
+        message = message[2:-1]
+        message = message[9:]
+        return message
+
+    def getAllSubjects(self, rangemin = None, rangemax = None):
+        '''Returns a list of all the subjects in the inbox.'''
+        if rangemin == None:
+            rangemin = 0
+        if rangemin <= 0:
+            rangemin = 0
+
+        if rangemax == None:
+            rangemax = self.messageCount
+        if rangemax > self.messageCount:
+            rangemax = self.messageCount
+        
+
+        subjects = []
+        for i in range(rangemin, rangemax + 1):
+            subjects.append(self.getMessageSubject(i))
+        return subjects
 
