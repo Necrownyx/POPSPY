@@ -101,6 +101,33 @@ def exportAccount():
         print(colorama.Fore.RED + "Failed to save data to: " + i + colorama.Fore.RESET)
         print(colorama.Fore.RED + "Please raise an issue on this projects github page" + i + colorama.Fore.RESET)
 
+def viewAccounts():
+    global d
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    colorama.init()
+    print(colorama.Fore.GREEN + "VIEW ACCOUNTS" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please select an option from below to continue" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "1. View all accounts" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "2. View active accounts" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "3. View inactive accounts" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "4. Edit an account" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "5. Delete an account" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "6. Exit" + colorama.Fore.RESET)
+
+    choice = input("Choice: ")
+    if choice == "1": printAccounts(d.accounts)
+    elif choice == "2": printAccounts(d.getActiveAccounts())
+    elif choice == "3": printAccounts(d.getInactiveAccounts())
+    elif choice == "4": editAccount()
+    elif choice == "5": deleteAccount()
+    elif choice == "6": 
+        os.system('cls' if os.name == 'nt' else 'clear')
+        printUI()
+    else: 
+        os.system('cls' if os.name == 'nt' else 'clear')
+        viewAccounts()
+
 
 
 

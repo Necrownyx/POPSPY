@@ -72,5 +72,19 @@ class data:
 
         # return the new data
         return [self.accounts, self.settings, self.messages]
+    
+    def getActiveAccounts(self):
+        activeAccounts = []
+        for i in self.accounts:
+            if self.accounts[i][3]:
+                activeAccounts.append(i)
+        return activeAccounts
+    
+    def getInactiveAccounts(self):
+        inactiveAccounts = []
+        for i in self.accounts:
+            if not self.accounts[i][3]:
+                inactiveAccounts.append(i)
+        return inactiveAccounts
 
 
