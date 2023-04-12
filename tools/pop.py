@@ -10,6 +10,20 @@ class account:
             self.messageCount = self.getMessageCount() # Number of messages in the inbox
             self.lastMessageDate = self.getMessageDate(self.messageCount) # Date of the last message in the inbox
     
+    def exportAccount(self):
+        '''Returns a string with the account information.'''
+        return self.email + ":" + self.password + ":" + self.server + ":" + str(self.active) + ":" + str(self.messageCount) + ":" + self.lastMessageDate
+
+    def importAccount(self, account):
+        '''Imports an account from a string.'''
+        account = account.split(":")
+        self.email = account[0]
+        self.password = account[1]
+        self.server = account[2]
+        self.active = bool(account[3])
+        self.messageCount = int(account[4])
+        self.lastMessageDate = account[5]
+
     def checkAccount(self):
         '''Checks if the account is valid by trying to connect to the server and log in.
             IF the account is valid, it will return True, otherwise it will return False.
