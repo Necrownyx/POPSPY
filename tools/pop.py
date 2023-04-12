@@ -2,7 +2,7 @@
 This file manages the email accounts and gives them specific functions.
 '''
 class account:
-    def __init__(self, email = None, password = None, server = None, check = True):
+    def __init__(self, email = None, password = None, server = None, check = True, active = False):
         self.email = email # Email address
         self.password = password # Password
         self.server = server # Pop server
@@ -22,7 +22,7 @@ class account:
                 self.messageCount = 0
                 self.lastMessageDate = None
         else:
-            self.active = True
+            self.active = active
             self.messageCount = 0
             self.lastMessageDate = None
     

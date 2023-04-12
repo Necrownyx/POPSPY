@@ -63,6 +63,11 @@ def importAccount():
     if check == "y": check = True
     else: check = False
 
+    default_active = False
+    if not check:
+        default_active = input("Do you want to set the default state of the accounts to active? (y/n): ")
+        if default_active == "y": default_active = True
+
     if accounts.endswith(".txt"):
         with open(accounts, "r") as f:
             accounts = f.read()
@@ -72,12 +77,12 @@ def importAccount():
             if i == "": accounts.remove(i)
             else: 
                 i = i.split(":")
-                acc = account(i[0], i[1], i[2], check)
+                acc = account(i[0], i[1], i[2], check, default_active)
                 d.appendAccount(acc)
     
     else:
         accounts = accounts.split(":")
-        acc = account(accounts[0], accounts[1], accounts[2], check)
+        acc = account(accounts[0], accounts[1], accounts[2], check, default_active)
         d.appendAccount(acc)
 
 def exportAccount():
