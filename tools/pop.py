@@ -12,12 +12,7 @@ class account:
         '''Checks if the account is valid by trying to connect to the server and log in.
             IF the account is valid, it will return True, otherwise it will return False.
             it also sets the messagecount variable to the number of messages in the inbox.
-
-        
-
         '''
-
-
         import poplib
         try:
             pop = poplib.POP3(self.server)
