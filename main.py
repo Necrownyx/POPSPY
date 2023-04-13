@@ -46,6 +46,7 @@ def printUI(error=False):
     elif choice == "4": scanSubjects()
     elif choice == "5": scanBodies()
     elif choice == "6": exit()
+    elif choice == "7": checkAccount()
     else: 
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI(error=True)
@@ -187,16 +188,24 @@ def scanSubjects():
     
     for acc in active_accounts:
         subjects = acc.getAllSubjects()
+        # remove all subjects that are None
+        for i in subjects:
+            if i == None: subjects.remove(i)
+        print(subjects)
 
         for key in keywords:
             for sub in subjects:
                 if key in sub:
-                    print(acc[0] + " has a message with the subject: " + sub + " with the keyword: " + key + " in it")
+                    print(acc.email + ":" + sub)
 
 def scanBodies():
     print('not implemented yet')
 
+def checkAccount():
+    index = input(": ")
+    result = accounts[int(index)].checkAccount()
+    print(result)
 
 
-# print the ui
-preUI()
+if __name__ == "__main__":
+    preUI()
