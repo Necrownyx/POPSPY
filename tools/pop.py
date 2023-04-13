@@ -40,6 +40,16 @@ class account:
         self.messageCount = int(account[4])
         self.lastMessageDate = account[5]
         return self
+    
+    def importAccountFromList(self, account):
+        '''Imports an account from a list.'''
+        self.email = account[0]
+        self.password = account[1]
+        self.server = account[2]
+        self.active = bool(account[3])
+        self.messageCount = int(account[4])
+        self.lastMessageDate = account[5]
+        return self
 
     def checkAccount(self):
         '''Checks if the account is valid by trying to connect to the server and log in.
@@ -125,9 +135,9 @@ class account:
     def getAllSubjects(self, rangemin = None, rangemax = None):
         '''Returns a list of all the subjects in the inbox.'''
         if rangemin == None:
-            rangemin = 0
+            rangemin = 1
         if rangemin <= 0:
-            rangemin = 0
+            rangemin = 1
 
         if rangemax == None:
             rangemax = self.messageCount

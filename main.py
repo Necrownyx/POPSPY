@@ -7,7 +7,7 @@ import time
 os.system('cls' if os.name == 'nt' else 'clear')
 
 def preUI():
-    global d, file
+    global d, file, accounts
     # get the user to select a file to use as the data file
     print(colorama.Fore.GREEN + "Welcome to POPSPY!" + colorama.Fore.RESET)
     print(colorama.Fore.GREEN + "Please select a data file to use or leave blank to use : 'data.json'" + colorama.Fore.RESET)
@@ -17,6 +17,10 @@ def preUI():
     if file == "": file = "data.json"
 
     d = data(file)
+    # load all the accoutns into accounts object
+    accounts = d.loadAccounts()
+    print(accounts)
+    input("Press enter to continue")
 
     os.system('cls' if os.name == 'nt' else 'clear')
     printUI()
@@ -48,7 +52,7 @@ def printUI(error=False):
 
 # import an account
 def importAccount():
-    global d, file
+    global d, file, accounts
 
     os.system('cls' if os.name == 'nt' else 'clear')
     colorama.init()
@@ -58,7 +62,7 @@ def importAccount():
     print(colorama.Fore.RED + "Example: example@example.com:password:pop.example.com" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "" + colorama.Fore.RESET)
 
-    accounts = input("Input: ")
+    acc = input("Input: ")
     check = input("do you want to check the accounts? (y/n): ")
     if check == "y": check = True
     else: check = False
@@ -68,23 +72,24 @@ def importAccount():
         default_active = input("Do you want to set the default state of the accounts to active? (y/n): ")
         if default_active == "y": default_active = True
 
-    if accounts.endswith(".txt"):
+    if acc.endswith(".txt"):
         with open(accounts, "r") as f:
-            accounts = f.read()
+            acc = f.read()
         
-        accounts = accounts.split("\n")
-        for i in accounts:
-            if i == "": accounts.remove(i)
+        acc = accounts.split("\n")
+        for i in acc:
+            if i == "": acc.remove(i)
             else: 
                 i = i.split(":")
                 acc = account(i[0], i[1], i[2], check, default_active)
                 d.appendAccount(acc)
+                accounts.append(acc)
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI()
     
     else:
-        accounts = accounts.split(":")
-        acc = account(accounts[0], accounts[1], accounts[2], check, default_active)
+        acc1 = acc.split(":")
+        acc= account(acc1[0], acc1[1], acc1[2], check, default_active)
         d.appendAccount(acc)
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI()
@@ -142,6 +147,51 @@ def printAccounts(accounts):
     os.system('cls' if os.name == 'nt' else 'clear')
     viewAccounts()
 
+def scanSubjects():
+    global d, accounts
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    colorama.init()
+    print(colorama.Fore.GREEN + "SCAN SUBJECTS" + colorama.Fore.RESET)
+    print(colorama.Fore.GREEN + "Please enter the keywords you want to scan for separated by a comma and a space" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "Example: keyword1, keyword2, keyword3" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "" + colorama.Fore.RESET)
+
+    keywords = input("Keywords: ")
+    keywords = keywords.split(", ")
+    
+    
+    # create a list of all active accounts that have more than 0 messages
+    active_accounts = []
+    for i in accounts:
+        if i.messageCount > 0 and i.active:
+            active_accounts.append(i)
+    
+    # if their is more accounts than active accounts
+    if len(accounts) > len(active_accounts):
+        print(colorama.Fore.RED + "There are " + str(len(accounts) - len(active_accounts)) + " accounts with no messages" + colorama.Fore.RESET)
+        print(colorama.Fore.RED + "Do you want to scan them for messages or they will be skipped? (y/n)" + colorama.Fore.RESET)
+        choice = input("Choice: ")
+        if choice == "y":
+            print('not implemented yet')
+        else:
+            pass
+    
+    # if their is no active accounts
+    if len(active_accounts) == 0:
+        print(colorama.Fore.RED + "There are no active accounts with messages" + colorama.Fore.RESET)
+        print(colorama.Fore.RED + "Please add some accounts or make some accounts active" + colorama.Fore.RESET)
+        input("Press enter to continue")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        printUI()
+    
+    for acc in active_accounts:
+        subjects = acc.getAllSubjects()
+
+        for key in keywords:
+            for sub in subjects:
+                if key in sub:
+                    print(acc[0] + " has a message with the subject: " + sub + " with the keyword: " + key + " in it")
 
 
 

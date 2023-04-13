@@ -102,4 +102,16 @@ class data:
                 inactiveAccounts.append(self.accounts[i])
         return inactiveAccounts
 
+    def loadAccounts(self):
+        from tools.pop import account
+        # load the account from the dictionary and create it into a account object
+        accounts = []
+        for i in self.accounts:
+            temp = account()
+            temp2 = temp.importAccountFromList(self.accounts[i])
+            accounts.append(temp2)
+        return accounts
+
+    
+        
 
