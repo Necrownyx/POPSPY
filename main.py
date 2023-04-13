@@ -48,7 +48,7 @@ def printUI(error=False):
 
 # import an account
 def importAccount():
-    global d
+    global d, file
 
     os.system('cls' if os.name == 'nt' else 'clear')
     colorama.init()
@@ -79,11 +79,15 @@ def importAccount():
                 i = i.split(":")
                 acc = account(i[0], i[1], i[2], check, default_active)
                 d.appendAccount(acc)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        printUI()
     
     else:
         accounts = accounts.split(":")
         acc = account(accounts[0], accounts[1], accounts[2], check, default_active)
         d.appendAccount(acc)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        printUI()
 
 def exportAccount():
     global d, file
@@ -96,13 +100,14 @@ def exportAccount():
     i = input("File: ")
     if i == "": i = file
 
-    if d.saveData(i, d):
+    print(d.accounts)
+    if d.saveData(file, [d.accounts, d.settings, d.messages]):
         print(colorama.Fore.GREEN + "Successfully saved data to: " + i + colorama.Fore.RESET)
         time.sleep(2)
         os.system('cls' if os.name == 'nt' else 'clear')
         printUI()
     else:
-        print(d.saveData(input))
+        print(d.saveData(file, [d.accounts, d.settings, d.messages]))
         print(colorama.Fore.RED + "Failed to save data to: " + i + colorama.Fore.RESET)
         print(colorama.Fore.RED + "Please raise an issue on this projects github page" + i + colorama.Fore.RESET)
 
@@ -116,7 +121,7 @@ def viewAccounts():
     print(colorama.Fore.RED + "1. View all accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "2. View active accounts" + colorama.Fore.RESET)
     print(colorama.Fore.RED + "3. View inactive accounts" + colorama.Fore.RESET)
-    print(colorama.Fore.RED + "5. Exit" + colorama.Fore.RESET)
+    print(colorama.Fore.RED + "4. Exit" + colorama.Fore.RESET)
 
     choice = input("Choice: ")
     if choice == "1": printAccounts(d.getAccounts())

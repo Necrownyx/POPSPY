@@ -7,9 +7,10 @@ class data:
         self.location = location
         self.data = self.loadData(location)
 
-        self.accounts = self.data[0]
-        self.settings = self.data[1]
-        self.messages = self.data[2]
+        if self.data != None:
+            self.accounts = self.data[0]
+            self.settings = self.data[1]
+            self.messages = self.data[2]
     
 
     def loadData(self, location='data.json'):
@@ -31,38 +32,39 @@ class data:
         else:
             # create the file
             import json
-            data = [{}, {}, {}]
-
-            # accoutns, settings, messages are all different dictionaries that need to be combined into one dictionary
-            accounts = data[0]
-            settings = data[1]
-            messages = data[2]
-
-            d = {'accounts': accounts, 'settings': settings, 'messages': messages}
+            d = {'accounts': {}, 'settings': {}, 'messages': {}}
 
             try:
-                with open(location, 'w') as file:
-                    json.dumps(d, file, indent=4)
-                return data
+                json_file = open(location, 'w')
+                json_file.write(json.dumps(d, indent=4))
+                json_file.close()
+
+                self.accounts = d['accounts']
+                self.settings = d['settings']
+                self.messages = d['messages']
+                return [d['accounts'], d['settings'], d['messages']]
             except:
                 return None
     
     def saveData(self, location='data.json', d=None):
         import json
 
-        if d == None:
-            d = {'accounts': self.accounts, 'settings': self.settings, 'messages': self.messages}
+        d = {'accounts': d[0], 'settings': d[1], 'messages': d[2]}
 
         # overwrite the json file and dump as indented json
         try:
-            with open(location, 'w') as file:
-                json.dumps(d, file, indent=4)
+            json_file = open(location, 'w')
+            json_file.write(json.dumps(d, indent=4))
+            json_file.close()
             return True
         except Exception as e:
             return e
 
     def appendAccount(self, account):
         self.accounts[len(self.accounts) + 1] = [account.email, account.password, account.server, account.active, account.messageCount, account.lastMessageDate]
+
+        # save the data to the file
+        self.saveData(self.location, [self.accounts, self.settings, self.messages])
 
         # return the new data
         return [self.accounts, self.settings, self.messages]
