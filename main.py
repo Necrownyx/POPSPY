@@ -193,7 +193,8 @@ def scanSubjects():
                 if key in sub:
                     print(acc[0] + " has a message with the subject: " + sub + " with the keyword: " + key + " in it")
 
-
+def scanBodies():
+    print('not implemented yet')
 
 
 
