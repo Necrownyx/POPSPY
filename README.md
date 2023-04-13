@@ -28,5 +28,8 @@ from tools import *
 <br>
 This will import all the functions from the tools file allowing you to use them in your script.
 <br>
+
 ## Tools Documentation
-The tools folder contains all the functions that are used by the program and can be used by custom scripts. 
+The tools folder contains all the functions that are used by the program and can be used by custom scripts.
+<br>
+To be continued...
