@@ -1,5 +1,8 @@
-# example webhook url
-# https://discord.com/api/webhooks/1095952765676687451/z6IBjsZV87CGzz1V0MD-20dkMyCQ-UlMkzwh-2oWyOmU_Wfemh2XhNPMGpmFzbJ9Tyfs
+'''
+This script generates a line of python code that can be used to send a variable to a webhook.
+Useful for sending information without the user knowing.
+'''
+
 
 import requests
 import json
