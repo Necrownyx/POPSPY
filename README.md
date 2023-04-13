@@ -3,6 +3,7 @@
 Program that uses the [poplib](https://docs.python.org/3/library/poplib.html) module to check for new emails in a POP3 server and check them for keywords.
 - Can be used on compromised accounts to retrive password reset links and codes.
 - Can be used to search recieved emails to find what services the user is subscribed to.
+- Includes a set of scripts to be used to retrieve the log in information for a user's email account.
 
 ## Usage
 The program has a simple ui that allows for use by non-technical users. However it has been created to be extremely modular allowing for custom scripts to be created to perform more advanced and specific tasks.
